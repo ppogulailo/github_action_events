@@ -8,8 +8,8 @@ on:
     branches:
       - main
       - 'dev-*'
-    paths-ignore:
-      - '.github/*'
+    #paths-ignore:
+      #- '.github/*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
