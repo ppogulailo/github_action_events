@@ -4,6 +4,12 @@ on:
     types:
       - opened
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'dev-*'
+    paths-ignore:
+      - '.github/*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
