@@ -1,43 +1,16 @@
-name: Events Demo 1
+name: Dev
 on:
-  pull_request:
-    types:
-      - opened
   workflow_dispatch:
   push:
     branches:
+      - dev
       - main
-      - 'dev-*'
-    #paths-ignore:
-      #- '.github/*'
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm ci
-      - name: Test code
-        run: npm run test
   build:
-    needs: test
     runs-on: ubuntu-latest
-    outputs:
-      script-file: ${{ steps.publish.outputs.script-file }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Build code
@@ -50,20 +23,4 @@ jobs:
         with:
           name: dist-files
           path: dist
-          #path: |
-           # dist
-            #package.json
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy
-        uses: actions/download-artifact@v3
-        with:
-          name: dist-files
-      - name: Output content
-        run: ls
-      - name: Output-filename
-        run: echo "${{ needs.build.outputs.script }}"
-      - name: Deploy
-        run: echo "Deploying ..."
+
